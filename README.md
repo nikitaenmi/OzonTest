@@ -94,6 +94,7 @@
 │           └── openapiv2.proto    
 ├── migrations/
 │   └── 001_init.sql               - Инициализация схемы БД
+├── doc/payment.swagger.json       - Swagger.json
 ├── samples/.env.example           - Пример .env 
 ├── docker-compose.yml             - Конфигурация Docker
 ├── Makefile                       - Make-файл
