@@ -45,50 +45,51 @@ Cумма вводится в валюте получателя платежа, 
 
 ## Архитектура 
 ```bash
-├── cmd/
+── cmd/
 │   └── main.go                    - Точка входа приложения
 ├── internal/
 │   ├── domain/
 │   │   └── payment.go             - Доменные сущности
 │   ├── server/
 │   │   ├── handler/
-│   │   │   └── payment.go         - Хендлер POST
-│   │   └── mapping.go             - Маппинг для хендлера
+│   │   │   ├── payment.go         - Хендлер POST
+│   │   │   └── swagger.go         - Swagger
+│   │   └── mapping.go             - Маппинг для хендлера 
 │   ├── services/
 │   │   ├── payment.go             - Бизнес-логика платежей
 │   │   ├── conventor.go           - Конвертер валют (парсит XML ответ мок-клиента)
 │   │   └── cbr_client.go          - Мок-клиент API ЦБ РФ
 │   ├── repositories/
-│   │   ├── payment.go             - Репозиторный слой
-│   │   └── mapping.go             - Маппинг для репозиторного слоя
+│   │   └── payment.go             - Репозиторный слой
 │   ├── database/
 │   │   ├── connection.go          - Подключение к БД
 │   │   └── models/
-│   │       └── models.go          - Модели базы данных
+│   │       └── models.go          - Модели базы данных и DTO репозиторного слоя
 │   └── config/
 │       └── config.go              - Конфиг
 ├── loadtest/
 │   └── main.go                    - Нагрузочное тестирование
-├── constants/
-│   └── constants.go               - Константы
-├── samples/
-│   └── .env.example               - Пример конфигурационного файла
-├── migrations/
-│   └── 001_init.sql               - Инициализация схемы и данных БД
 ├── api/
 │   └── payment.proto              - proto-файл
 ├── gen/
 │   ├── payment.pb.go              - Сгенерированные структуры Protobuf
-│   ├── payment_grpc.pb.go
-│   └── payment.pb.gw.go
-├── third_party/
-│   └── google/
-│       └── api/
-│           ├── annotations.proto
-│           ├── http.proto
-│           └── status.proto
-├── docker-compose.yml             - Докер
-├── Makefile                       - Make-файл
+│   ├── payment_grpc.pb.go         
+│   ├── payment.pb.gw.go           
+│   └── payment.swagger.json       
+├── third_party/                   - proto-файлы
+│   ├── google/
+│   │   └── api/
+│   │       ├── annotations.proto  
+│   │       └── http.proto         
+│   └── protoc-gen-openapiv2/
+│       └── options/
+│           ├── annotations.proto  
+│           └── openapiv2.proto    
+├── migrations/
+│   └── 001_init.sql               - Инициализация схемы и данных БД
+├── samples/                       - Примеры файлов конфигурации
+├── docker-compose.yml             - Конфигурация Docker
+├── Makefile                       - Автоматизация задач
 ├── go.mod
 └── go.sum
 ```
@@ -137,18 +138,18 @@ cd ./loadtest
 go run main.go
 ```
 Результат:
-- Total requests: 1000
-- Successful: 1000
-- Errors: 0
-- Duration: 597ms
-- RPS: 1674.35
+- Total requests: 1000   - всего запросов
+- Successful: 1000       - успешных запросов
+- Errors: 0              - неуспешных запросов
+- Duration: 305ms        - время работы
+- RPS: 3269.53
 
 Request distribution:
-- Valid: 423
-- Negative amount: 142
-- Amount exceeded: 142
-- Invalid provider: 143
-- Missing provider: 143
+- Amount exceeded: 200    - запросы превышающие 15000
+- Invalid currency: 200   - запросы с невалидной валютой
+- Negative amount: 200    - запросы с отрицательной суммой
+- Valid alpha eur: 200    - валидный запрос (Альфа EUR)
+- Valid tbank usd: 200    - валидный запрос (ТБанк USD)
 
 ## Описание переменных окружения
 Переменные окружения:
@@ -186,7 +187,6 @@ Request distribution:
 - Чистая архитектура с разделением ответственностиc
 - Нагрузочное тестирование с идентификацией запросов
 - Стабильный мок-сервис
-
-
+- Swagger
 
 
