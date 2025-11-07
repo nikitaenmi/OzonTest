@@ -166,7 +166,9 @@ curl -X POST http://localhost:8080/payments \
   -H "Content-Type: application/json" \
   -d '{"provider": "Ivan", "amount": 100, "date": "01/01/2023", "currency": "USD"}'
 ```
-Ответ:
+
+### Ответ:
+
 ```bash
 {
   "id": 1,
