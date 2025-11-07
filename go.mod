@@ -2,8 +2,6 @@ module github.com/nikitaenmi/OzonTest
 
 go 1.24.0
 
-toolchain go1.24.9
-
 require (
 	github.com/caarlos0/env/v9 v9.0.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3
