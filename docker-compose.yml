@@ -1,0 +1,21 @@
+services:
+  dbstore:
+    container_name: dbtest
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: database
+    ports:
+      - '5432:5432'
+
+  pgadmin:
+    container_name: pgadmin4_container_url
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@root.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - '5051:80'

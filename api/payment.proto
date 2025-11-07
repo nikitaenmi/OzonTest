@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package payment.api;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/nikitaenmi/OzonTest/gen";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "OzonTest Payment API";
+    version: "1.0";
+    contact: {
+      name: "Nikitaenmi";
+      url: "https://github.com/nikitaenmi/OzonTest";
+    };
+    description: "Payment microservice";
+  };
+  host: "localhost:8080";
+  schemes: HTTP;
+  schemes: HTTPS;
+  consumes: "application/json";
+  produces: "application/json";
+};
+
+service PaymentService {
+  rpc Create(CreatePaymentRequest) returns (Payment) {
+    option (google.api.http) = {
+      post: "/payments"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create payment";
+      description: "Create new payment with currency conversion";
+      tags: "payments";
+    };
+  }
+}
+
+message CreatePaymentRequest {
+  string provider = 1;
+  double amount = 2;
+  string date = 3;
+  string currency = 4;
+}
+
+message Payment {
+  int32 id = 1;
+  string provider = 2;
+  double amount = 3;
+  string date = 4;
+  string currency = 5;
+}
